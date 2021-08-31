@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Threading.Tasks;
 using UnityEngine;
 
 public class MazeBoard : MonoBehaviour
@@ -8,61 +6,50 @@ public class MazeBoard : MonoBehaviour
     public static readonly int HEIGHT = 12;
     public static readonly int WIDTH = 20;
 
-    private InnerMazeNode[,] mazeNodes;
-    private int[,] mazeBoard;
+    private MazeNode[,] mazeNodes;
 
     [SerializeField] GameObject prefabMazeNode;
-
-    private class InnerMazeNode
-    {
-        private MazeNode mazeNode;
-        
-        public InnerMazeNode(int row, int col, MazeNode mazeNode, int[,] mazeBoard)
-        {
-            this.mazeNode = mazeNode;
-
-            mazeNode.notify += delegate
-            {
-                mazeBoard[row, col] = (mazeBoard[row, col] + 1) % 3;
-            };
-        }
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        mazeNodes = new InnerMazeNode[HEIGHT,WIDTH];
-        mazeBoard = new int[HEIGHT, WIDTH];
+        mazeNodes = new MazeNode[HEIGHT,WIDTH];
 
         for (int row = 0; row < HEIGHT; ++row)
         {
             for(int col = 0; col < WIDTH; ++col)
             {
-                mazeBoard[row, col] = 0;
-
                 var mazeNode = Instantiate(prefabMazeNode);
 
                 var transform = mazeNode.GetComponent<Transform>();
 
                 transform.SetParent(GetComponent<Transform>());
 
-                transform.position = getPosition(row, col);
+                transform.position = GetPosition(row, col);
 
-                mazeNodes[row, col] = new InnerMazeNode(row, col, mazeNode.GetComponent<MazeNode>(), mazeBoard);
+                mazeNodes[row, col] = mazeNode.GetComponent<MazeNode>();
             }
         }
 
-        setIsChangeable(true);
+        SetIsChangeable(true);
+
+        Invoke("doing", 30);
     }
 
-    public void setIsChangeable(bool b)
+    private void doing()
     {
-        MazeNode.setIsChangeable(b);
+        SetIsChangeable(false);
+        Algorithm alg = (new GameObject("BFS Algorithm")).AddComponent<BFS>();
+        Debug.Log(alg.IsSolvable(0, 0, mazeNodes));
     }
 
-    public static Vector3 getPosition(int row, int col)
+    public void SetIsChangeable(bool b)
+    {
+        MazeNode.SetIsChangeable(b);
+    }
+
+    public static Vector3 GetPosition(int row, int col)
     {
         return new Vector3((((float)-WIDTH) / 2 + col + 0.5f) * MazeNode.WIDTH, ((float)HEIGHT / 2 - row - 0.5f) * MazeNode.HEIGHT);
     }
-
 }

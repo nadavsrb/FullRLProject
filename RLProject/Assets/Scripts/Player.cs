@@ -14,11 +14,11 @@ public class Player : MonoBehaviour
 
         transform.localScale = new Vector3(MazeNode.WIDTH, MazeNode.HEIGHT);
 
-        setPosition(0, 0);
+        SetPosition(0, 0);
     }
 
-    public void setPosition(int row, int col)
+    public void SetPosition(int row, int col)
     {
-        transform.position = MazeBoard.getPosition(row, col);
+        transform.position = MazeBoard.GetPosition(row, col);
     }
 }
