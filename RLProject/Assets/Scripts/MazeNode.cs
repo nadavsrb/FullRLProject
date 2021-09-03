@@ -10,30 +10,39 @@ public class MazeNode : MonoBehaviour
         TARGERT
     }
 
-    public static readonly float HEIGHT = 0.8f;
-    public static readonly float WIDTH = 0.8f;
+    public static readonly float HEIGHT = 0.5f;
+    public static readonly float WIDTH = 0.5f;
 
     private SpriteRenderer blockSR;
     private SpriteRenderer aliceSR;
     private readonly Color UNBLOCKED_COLOR = new Color(50.0f / 255.0f, 50.0f / 255.0f, 50.0f / 255.0f, 1.0f);
     private readonly Color MARKED_COLOR = new Color(255.0f / 255.0f, 255.0f / 255.0f, 0.0f / 255.0f, 1.0f);
+    private readonly Color SPECIAL_MARKED_COLOR = new Color(255.0f / 255.0f, 150.0f / 255.0f, 0.0f / 255.0f, 1.0f);
     private readonly Color BLOCKED_COLOR = Color.red;
     private static bool isChangeable = false;
+    private static bool isInDrag = false;
 
     private static bool shouldMarkeWithColor = false;
+    private static bool shouldMarkeWithSpecialColor = false;
     private bool markedState = false;
     public bool MarkedState
     {
         get => markedState;
         set {
-            if (value == markedState || isChangeable) return;
+            if ((value == markedState && !shouldMarkeWithSpecialColor) || isChangeable) return;
 
             if (shouldMarkeWithColor)
             {
                 Color color = UNBLOCKED_COLOR;
                 if (value)
                 {
-                    color = MARKED_COLOR;
+                    if (shouldMarkeWithSpecialColor) {
+                        color = SPECIAL_MARKED_COLOR;
+                    }
+                    else
+                    {
+                        color = MARKED_COLOR;
+                    }
                 }
                 blockSR.color = color;
             }
@@ -42,6 +51,13 @@ public class MazeNode : MonoBehaviour
         }
     }
 
+
+    private MazeNode fatherNode = null;
+    public MazeNode FatherNode
+    {
+        get => fatherNode;
+        set => fatherNode = value;
+    }
 
     private States state = States.UNBLOCKED;
     public States State{
@@ -96,6 +112,21 @@ public class MazeNode : MonoBehaviour
         if (!isChangeable) return;
 
         State = (States)(((int)State + 1) % 3);
+
+        isInDrag = true;
+    }
+
+
+    private void OnMouseUp()
+    {
+        isInDrag = false;
+    }
+
+    private void OnMouseEnter()
+    {
+        if (!isChangeable || !isInDrag) return;
+
+        State = (States)(((int)State + 1) % 2);
     }
 
     public static void SetIsChangeable(bool state)
@@ -106,5 +137,10 @@ public class MazeNode : MonoBehaviour
     public static void SetShouldMarkeWithColor(bool state)
     {
         shouldMarkeWithColor = state;
+    }
+
+    public static void SetShouldMarkeWithSpecialColor(bool state)
+    {
+        shouldMarkeWithSpecialColor = state;
     }
 }

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class MazeBoard : MonoBehaviour
 {
-    public static readonly int HEIGHT = 12;
-    public static readonly int WIDTH = 20;
+    public static readonly int HEIGHT = 18;
+    public static readonly int WIDTH = 40;
 
     private MazeNode[,] mazeNodes;
 
@@ -33,13 +33,13 @@ public class MazeBoard : MonoBehaviour
 
         SetIsChangeable(true);
 
-        Invoke("doing", 30);
+        Invoke("doing", 40);
     }
 
     private void doing()
     {
         SetIsChangeable(false);
-        Algorithm alg = (new GameObject("BFS Algorithm")).AddComponent<BFS>();
+        Algorithm alg = (new GameObject("Algorithm")).AddComponent<BFS>();
         Debug.Log(alg.IsSolvable(0, 0, mazeNodes));
     }
 

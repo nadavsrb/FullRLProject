@@ -5,14 +5,24 @@ using UnityEngine;
 
 public abstract class Algorithm: MonoBehaviour
 {
-    public static readonly int MARKE = 1;
-    public static readonly int UNMARKE = 0;
-    public static readonly float DELAY_SEC = 0.02f;
-    public IList<Vector3Int> animationList;
+    protected enum AnimAction
+    {
+        MARKE,
+        UNMARKE,
+        UNMARKE_ALL
+    }
+    
+    public static readonly float DELAY_SEC = 0.01f;
+    public static readonly float SEC_BEFORE_END_ANIM = 1F;
+    protected IList<Vector3Int> animSearchList;
+    protected MazeNode targetNode = null;
 
     public bool IsSolvable(int rowPlayer, int colPlayer, MazeNode[,] mazeNode)
     {
-        animationList = new List<Vector3Int>();
+        animSearchList = new List<Vector3Int>();
+        targetNode = null;
+
+        UnFatherAll(mazeNode);
 
         bool isSolvable = Solve(rowPlayer,colPlayer, mazeNode);
 
@@ -26,9 +36,17 @@ public abstract class Algorithm: MonoBehaviour
 
     private void UnMarkeAll(MazeNode[,] mazeNode)
     {
-        foreach (Vector3Int vec in animationList)
+        foreach (Vector3Int vec in animSearchList)
         {
             mazeNode[vec.x, vec.y].MarkedState = false;
+        }
+    }
+
+    private void UnFatherAll(MazeNode[,] mazeNode)
+    {
+        foreach (Vector3Int vec in animSearchList)
+        {
+            mazeNode[vec.x, vec.y].FatherNode = null;
         }
     }
 
@@ -38,16 +56,52 @@ public abstract class Algorithm: MonoBehaviour
 
         MazeNode.SetShouldMarkeWithColor(true);
 
-        foreach (Vector3Int vec in animationList)
+        foreach (Vector3Int vec in animSearchList)
         {
-            mazeNode[vec.x, vec.y].MarkedState = (vec.z == MARKE);
+            doAnimAction(vec, mazeNode);
+
             yield return wait;
         }
 
+        MazeNode.SetShouldMarkeWithSpecialColor(true);
+
+        MazeNode node = targetNode;
+        while (node != null)
+        {
+            node.MarkedState = true;
+            node = node.FatherNode;
+
+            yield return wait;
+        }
+
+        MazeNode.SetShouldMarkeWithSpecialColor(false);
+
+        yield return new WaitForSeconds(SEC_BEFORE_END_ANIM);
+
         UnMarkeAll(mazeNode);
+        UnFatherAll(mazeNode);
 
         MazeNode.SetShouldMarkeWithColor(false);
-    } 
+    }
+    
+    private void doAnimAction(Vector3Int vec, MazeNode[,] mazeNode)
+    {
+        switch ((AnimAction)vec.z)
+        {
+            case AnimAction.MARKE:
+                mazeNode[vec.x, vec.y].MarkedState = true;
+                break;
+            case AnimAction.UNMARKE:
+                mazeNode[vec.x, vec.y].MarkedState = false;
+                break;
+            case AnimAction.UNMARKE_ALL:
+                UnMarkeAll(mazeNode);
+                break;
+            default:
+                Debug.Log("Error: An Unknown animation action");
+                break;
+        }
+    }
 
     protected bool IsValid(int rowPlayer, int colPlayer, MazeNode[,] mazeNode)
     {
@@ -63,26 +117,32 @@ public class DFS : Algorithm
 {
     protected override bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode)
     {
+        return SolveHelper(rowPlayer, colPlayer, mazeNode, null);
+    }
+
+    private bool SolveHelper(int rowPlayer, int colPlayer, MazeNode[,] mazeNode, MazeNode fatherNode)
+    {
         if (!IsValid(rowPlayer, colPlayer, mazeNode) ||
             mazeNode[rowPlayer, colPlayer].State == MazeNode.States.BLOCKED ||
             mazeNode[rowPlayer, colPlayer].MarkedState == true) return false;
 
-        
+        mazeNode[rowPlayer, colPlayer].FatherNode = fatherNode;
         mazeNode[rowPlayer, colPlayer].MarkedState = true;
-        animationList.Add(new Vector3Int(rowPlayer, colPlayer, MARKE));
+        animSearchList.Add(new Vector3Int(rowPlayer, colPlayer, (int)AnimAction.MARKE));
 
         if (mazeNode[rowPlayer, colPlayer].State == MazeNode.States.TARGERT)
         {
-            animationList.Add(new Vector3Int(rowPlayer, colPlayer, UNMARKE));
+            targetNode = mazeNode[rowPlayer, colPlayer];
             return true;
         }
-        
-        bool isSolvable = Solve(rowPlayer, colPlayer + 1, mazeNode) ||
-             Solve(rowPlayer - 1, colPlayer, mazeNode) ||
-             Solve(rowPlayer + 1, colPlayer, mazeNode) ||
-             Solve(rowPlayer, colPlayer - 1, mazeNode);
 
-        animationList.Add(new Vector3Int(rowPlayer, colPlayer, UNMARKE));
+        bool isSolvable = SolveHelper(rowPlayer, colPlayer + 1, mazeNode, mazeNode[rowPlayer, colPlayer]) ||
+             SolveHelper(rowPlayer - 1, colPlayer, mazeNode, mazeNode[rowPlayer, colPlayer]) ||
+             SolveHelper(rowPlayer + 1, colPlayer, mazeNode, mazeNode[rowPlayer, colPlayer]) ||
+             SolveHelper(rowPlayer, colPlayer - 1, mazeNode, mazeNode[rowPlayer, colPlayer]);
+
+        // animSearchList.Add(new Vector3Int(rowPlayer, colPlayer, (int)AnimAction.UNMARKE));
+
         return isSolvable;
     }
 }
@@ -98,7 +158,7 @@ public class BFS : Algorithm
         queue.Enqueue(new Vector2Int(rowPlayer, colPlayer));
 
         mazeNode[rowPlayer, colPlayer].MarkedState = true;
-        animationList.Add(new Vector3Int(rowPlayer, colPlayer, MARKE));
+        animSearchList.Add(new Vector3Int(rowPlayer, colPlayer, (int)AnimAction.MARKE));
 
         bool isSolvable = false;
         while(queue.Count != 0)
@@ -118,12 +178,15 @@ public class BFS : Algorithm
                     mazeNode[newPos.x, newPos.y].State == MazeNode.States.BLOCKED ||
                      mazeNode[newPos.x, newPos.y].MarkedState == true) continue;
 
+                mazeNode[newPos.x, newPos.y].FatherNode = mazeNode[currPos.x, currPos.y];
                 mazeNode[newPos.x, newPos.y].MarkedState = true;
-                animationList.Add(new Vector3Int(newPos.x, newPos.y, MARKE));
+                animSearchList.Add(new Vector3Int(newPos.x, newPos.y, (int)AnimAction.MARKE));
 
                 if(mazeNode[newPos.x, newPos.y].State == MazeNode.States.TARGERT)
                 {
-                    while(queue.Count != 0)
+                    targetNode = mazeNode[newPos.x, newPos.y];
+
+                    while (queue.Count != 0)
                     {
                         var oldPos = queue.Dequeue();
                     }
