@@ -1,4 +1,4 @@
 # languge which are used in this project:
-* linguist-vendored
-*.cs linguist-vendored=true
-*.py linguist-vendored=true
+
+*.cs linguist-detectable=true
+*.py linguist-detectable=true
