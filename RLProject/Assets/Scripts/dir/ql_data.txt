@@ -1,0 +1,27 @@
+discount rate:
+0.99
+
+epsilon rate:
+1 0
+
+learning rate:
+0.7
+
+max episodes:
+150
+
+max steps:
+40
+
+rewards by state-type:
+{'e': -1,'t': 40,'b': -100, 'o': -100, 'v': -1}
+
+states data:
+e e e b e e e e
+b b e b e b b e
+e e e b e b e e
+e b b b e b e b
+e e e e e b t e
+
+starting position:
+0 0

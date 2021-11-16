@@ -17,7 +17,7 @@ public class MazeNode : MonoBehaviour
     private SpriteRenderer aliceSR;
     private readonly Color UNBLOCKED_COLOR = new Color(50.0f / 255.0f, 50.0f / 255.0f, 50.0f / 255.0f, 1.0f);
     private readonly Color MARKED_COLOR = new Color(255.0f / 255.0f, 255.0f / 255.0f, 0.0f / 255.0f, 1.0f);
-    private readonly Color SPECIAL_MARKED_COLOR = new Color(255.0f / 255.0f, 150.0f / 255.0f, 0.0f / 255.0f, 1.0f);
+    private readonly Color SPECIAL_MARKED_COLOR = new Color(55.0f / 255.0f, 155.0f / 255.0f, 50.0f / 255.0f, 1.0f);
     private readonly Color BLOCKED_COLOR = Color.red;
     private static bool isChangeable = false;
     private static bool isInDrag = false;
