@@ -315,6 +315,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c80303035ba89418c1ec9ad2e524e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aiPlayer: {fileID: 1388681960}
+  HEIGHT: 18
+  WIDTH: 35
   prefabMazeNode: {fileID: 8528421189322819308, guid: d2dae9b7e0baf954989ef71250d01290,
     type: 3}
 --- !u!4 &1074771419
@@ -342,6 +345,7 @@ GameObject:
   - component: {fileID: 1388681958}
   - component: {fileID: 1388681957}
   - component: {fileID: 1388681959}
+  - component: {fileID: 1388681960}
   m_Layer: 0
   m_Name: Bob
   m_TagString: Untagged
@@ -421,10 +425,44 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1388681956}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9bfbfbf2d6ca6284dabe5dd7acad3699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabMazeNode: {fileID: 8528421189322819308, guid: d2dae9b7e0baf954989ef71250d01290,
-    type: 3}
+  mazeBoard: {fileID: 1074771418}
+--- !u!114 &1388681960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388681956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e85e615f60e2214fa82ecb82027c9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mazeBoard: {fileID: 1074771418}
+  aiScriptPath: Assets/Scripts/ql_val_iter.py
+  numEpisEachFrame: 100
+  discountRate: 0.99
+  epsilonRate:
+    start: 1
+    end: 0
+  learningRate:
+    start: 1
+    end: 0.7
+  maxEpisodes: 5000
+  maxSteps: 500
+  rewards:
+  - nodeType: e
+    reward: -1
+  - nodeType: t
+    reward: 30
+  - nodeType: b
+    reward: -100
+  - nodeType: o
+    reward: -100
+  - nodeType: r
+    reward: -1

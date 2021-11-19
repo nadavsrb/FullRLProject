@@ -1,0 +1,40 @@
+discount rate:
+0.99
+
+epsilon rate:
+1 0
+
+learning rate:
+1 0.7
+
+max episodes:
+5000
+
+max steps:
+500
+
+rewards by state-type:
+{'e': -1,'t': 30,'b': -100,'o': -100,'r': -1}
+
+states data:
+e b e b b e b e e e b b e e e e e t e b b b b e e e e e e e e e e e e
+e e b e e b b e b e b e e b e b b e e e b b e e e t e e e e b e b b e
+b e e e b b b b e e e b b b e e e b b b e e e e e e e b e e b e e e e
+e e e e b e e e e e b e e e e b b e e b b e e b b e e b b e e b e e e
+b b b e b b e b b e e e b e e b b e e b b e e e e b b b b b e e e e e
+e e b e e b b e e e b e e e b e e e e b e b b e e e b e e e e b e e e
+e b b e b e e e e e e e e b e b e e b e b e e e b e b e e t e e b e e
+e e e e e b b e b e b e e e e b e b e b e b e e b b e e e e e e b e e
+t b e b e b e b b b e e e t e e b e b e e e b b e e e b e b b b b e e
+e e e e e e b e e b e e e e b b e e b b b b e e e e e e e e e e e e e
+b e e e b e e b b e e e e b b e e e e e e e e e e e e e b b e b e e e
+b e b e e b e e e e b e b b e e e e e b e e b b b b b e e e e e b e b
+e e e e e e e b e e e e e b b e e e b e b e e e b e e e e e e e e e e
+t e e e b b e e e e e e e e e e e e e b b b e e b e b e e e e e e e e
+e e b b e e e e e e e e b b b e b b b b b b e e e b b b e e e e e e e
+e b e e e e e b b b b b e b b e b b b e e b e e e e e b b b e b e b e
+e b e e e b b b e e e e e e e e e e e e e e e e e e e b e e e e e t e
+e e b b b b e e e e e e e e e t e e e e e e e e e e e b e e e e e e e
+
+starting position:
+0 0

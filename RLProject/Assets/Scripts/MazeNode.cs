@@ -7,7 +7,8 @@ public class MazeNode : MonoBehaviour
     public enum States {
         UNBLOCKED,
         BLOCKED,
-        TARGERT
+        TARGERT,
+        TARGET_REACHED
     }
 
     public static readonly float HEIGHT = 0.5f;
@@ -65,7 +66,8 @@ public class MazeNode : MonoBehaviour
 
         set
         {
-            if (value == state || !isChangeable) return;
+            if (value == state || 
+                (!isChangeable && value != States.TARGERT && value != States.TARGET_REACHED)) return;
 
             aliceSR.enabled = false;
 
@@ -82,6 +84,11 @@ public class MazeNode : MonoBehaviour
                 case States.TARGERT:
                     blockSR.color = UNBLOCKED_COLOR;
                     aliceSR.enabled = true;
+                    break;
+
+                case States.TARGET_REACHED:
+                    blockSR.color = UNBLOCKED_COLOR;
+                    aliceSR.enabled = false;
                     break;
 
                 default:

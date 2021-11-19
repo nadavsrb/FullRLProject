@@ -1,0 +1,600 @@
+******* episode 1 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 2 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 3 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 4 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 5 *******
+
+episode actions: [1, 2]
+episode reward: -101
+
+******* episode 6 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 7 *******
+
+episode actions: [1, 0]
+episode reward: -101
+
+******* episode 8 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 9 *******
+
+episode actions: [1, 1, 0]
+episode reward: -102
+
+******* episode 10 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 11 *******
+
+episode actions: [1, 1, 2, 1]
+episode reward: -103
+
+******* episode 12 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 13 *******
+
+episode actions: [1, 2]
+episode reward: -101
+
+******* episode 14 *******
+
+episode actions: [1, 1, 3, 2]
+episode reward: -103
+
+******* episode 15 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 16 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 17 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 18 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 19 *******
+
+episode actions: [1, 3, 1, 1, 1]
+episode reward: -104
+
+******* episode 20 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 21 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 22 *******
+
+episode actions: [1, 1, 3, 3, 1, 1, 2, 0, 2, 2, 0, 3]
+episode reward: -111
+
+******* episode 23 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 24 *******
+
+episode actions: [1, 1, 2, 2, 1]
+episode reward: -104
+
+******* episode 25 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 26 *******
+
+episode actions: [1, 1, 2, 2, 2]
+episode reward: -104
+
+******* episode 27 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 28 *******
+
+episode actions: [1, 1, 2, 2, 3, 0]
+episode reward: -105
+
+******* episode 29 *******
+
+episode actions: [1, 3, 1, 1, 2, 2, 3, 1, 0, 2, 3, 2]
+episode reward: -111
+
+******* episode 30 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 31 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 32 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 33 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 34 *******
+
+episode actions: [1, 1, 2, 0, 3, 1, 2, 2, 3, 3, 0]
+episode reward: -110
+
+******* episode 35 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 1, 3, 2, 0, 3]
+episode reward: -110
+
+******* episode 36 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 37 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 38 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 39 *******
+
+episode actions: [1, 0]
+episode reward: -101
+
+******* episode 40 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 1]
+episode reward: -107
+
+******* episode 41 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 42 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 43 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 44 *******
+
+episode actions: [1, 1, 2, 2, 3, 1, 3, 3, 2, 2, 0, 3]
+episode reward: -111
+
+******* episode 45 *******
+
+episode actions: [1, 1, 2, 2, 0, 2, 3, 3, 2, 2, 1, 0]
+episode reward: -111
+
+******* episode 46 *******
+
+episode actions: [1, 2]
+episode reward: -101
+
+******* episode 47 *******
+
+episode actions: [1, 1, 3, 3, 1, 1, 2, 0, 2, 2, 3, 3, 2, 0, 1, 3, 2, 2, 2]
+episode reward: -118
+
+******* episode 48 *******
+
+episode actions: [1, 0]
+episode reward: -101
+
+******* episode 49 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 3]
+episode reward: -108
+
+******* episode 50 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 0]
+episode reward: -110
+
+******* episode 51 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 52 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 0, 2, 1, 2]
+episode reward: -111
+
+******* episode 53 *******
+
+episode actions: [1, 1, 3, 3, 1, 1, 2, 2, 3, 3, 2, 2, 1, 3, 1, 1, 1, 0]
+episode reward: -117
+
+******* episode 54 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 55 *******
+
+episode actions: [1, 2]
+episode reward: -101
+
+******* episode 56 *******
+
+episode actions: [1, 1, 2, 2, 3, 1, 0, 2, 3, 3, 2, 2, 1, 1, 2]
+episode reward: -114
+
+******* episode 57 *******
+
+episode actions: [1, 1, 2, 0, 2, 2, 3, 3, 2, 0, 1, 3, 2, 2, 1, 1, 3, 1, 1, 1, 0, 0, 0, 0, 0]
+episode reward: -42
+
+******* episode 58 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 3, 0, 2, 1, 1, 1, 2]
+episode reward: -115
+
+******* episode 59 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 60 *******
+
+episode actions: [1, 3, 3]
+episode reward: -102
+
+******* episode 61 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 3, 1, 1, 0, 1]
+episode reward: -74
+
+******* episode 62 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 3, 1, 1, 1, 0, 2, 0, 3]
+episode reward: -76
+
+******* episode 63 *******
+
+episode actions: [1, 1, 3, 1, 2, 2, 0, 2, 3, 1, 3, 3, 2, 2, 1, 1, 1, 1, 0, 2, 1, 0]
+episode reward: -80
+
+******* episode 64 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 1, 3, 2, 2, 1, 1, 1, 1, 0, 0, 1]
+episode reward: -75
+
+******* episode 65 *******
+
+episode actions: [1, 1, 2, 0, 2, 2, 3, 3, 2, 0, 2, 2, 1, 1, 1, 1, 0, 2, 2]
+episode reward: -77
+
+******* episode 66 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 67 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 68 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 69 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 70 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 71 *******
+
+episode actions: [1, 1, 0]
+episode reward: -102
+
+******* episode 72 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 73 *******
+
+episode actions: [1, 3, 1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 2, 0, 3]
+episode reward: -77
+
+******* episode 74 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 75 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 76 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 2, 3, 0]
+episode reward: -74
+
+******* episode 77 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0]
+episode reward: -35
+
+******* episode 78 *******
+
+episode actions: [1, 1, 3, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 2, 3, 1, 1, 1, 0, 0, 0]
+episode reward: 1
+
+******* episode 79 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 80 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 2, 0, 3]
+episode reward: -38
+
+******* episode 81 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 1]
+episode reward: -35
+
+******* episode 82 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 83 *******
+
+episode actions: [2]
+episode reward: -100
+
+******* episode 84 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 85 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0]
+episode reward: -36
+
+******* episode 86 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 2]
+episode reward: -35
+
+******* episode 87 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 88 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 0, 3]
+episode reward: -37
+
+******* episode 89 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 90 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 1]
+episode reward: -36
+
+******* episode 91 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 3, 1, 1, 1, 0]
+episode reward: -39
+
+******* episode 92 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 0, 1, 1, 2]
+episode reward: -38
+
+******* episode 93 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 0, 3]
+episode reward: -38
+
+******* episode 94 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 3, 1, 1, 1]
+episode reward: -39
+
+******* episode 95 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 1]
+episode reward: -37
+
+******* episode 96 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 3, 2, 2, 0, 2, 2, 2, 0, 3]
+episode reward: -43
+
+******* episode 97 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0]
+episode reward: 2
+
+******* episode 98 *******
+
+episode actions: [0]
+episode reward: -100
+
+******* episode 99 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 1, 0]
+episode reward: -39
+
+******* episode 100 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 1]
+episode reward: 3
+
+******* episode 101 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 0, 2, 2, 2]
+episode reward: -40
+
+******* episode 102 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 0, 3]
+episode reward: 1
+
+******* episode 103 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 1]
+episode reward: 2
+
+******* episode 104 *******
+
+episode actions: [1, 3, 1, 3, 2]
+episode reward: -104
+
+******* episode 105 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 0, 1]
+episode reward: 2
+
+******* episode 106 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2]
+episode reward: 2
+
+******* episode 107 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 0, 2, 2, 3, 0]
+episode reward: 40
+
+******* episode 108 *******
+
+episode actions: [3]
+episode reward: -100
+
+******* episode 109 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 0, 3, 0]
+episode reward: 1
+
+******* episode 110 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 1, 0, 0, 0]
+episode reward: 39
+
+******* episode 111 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 2, 0, 3]
+episode reward: 40
+
+******* episode 112 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 2, 1]
+episode reward: 41
+
+******* episode 113 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 1, 1]
+episode reward: 41
+
+******* episode 114 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 2, 2]
+episode reward: 181
+
+******* episode 115 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 1, 2]
+episode reward: 41
+
+******* episode 116 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 1, 3, 2, 2]
+episode reward: 179
+
+******* episode 117 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 2, 2]
+episode reward: 181
+
+******* episode 118 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 2, 2]
+episode reward: 181
+
+******* episode 119 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 2, 2]
+episode reward: 181
+
+******* episode 120 *******
+
+episode actions: [1, 1, 2, 2, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 2, 2]
+episode reward: 181
+

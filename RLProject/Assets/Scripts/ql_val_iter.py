@@ -3,6 +3,7 @@ import sys
 import ast
 import operator
 import numpy as np
+import os
 
 disc_rate = None
 epsilon_rate = None
@@ -18,8 +19,7 @@ def get_initials(file_name):
     global disc_rate, epsilon_rate, learning_rate, \
         max_episodes, max_steps, rewards, states_data, start_pos
 
-    file_path = f"{sys.argv[1]}/{file_name}"
-    with open(file_path, 'r') as file:
+    with open(file_name, 'r') as file:
         while line := file.readline():
             line = line.strip()
 
@@ -44,7 +44,7 @@ def get_initials(file_name):
                 start_pos = tuple(map(int, file.readline().strip().split(' ')))
 
 
-def ql_learn_value_iter(out_episodes_file, out_final_qtable):
+def ql_learn_value_iter(out_episodes_file, out_qtable_file):
     global states_data
 
     num_targs = np.count_nonzero(states_data == 't')
@@ -55,69 +55,77 @@ def ql_learn_value_iter(out_episodes_file, out_final_qtable):
 
     action_offset = [(-1, 0), (0, 1), (1, 0), (0, -1)]  # up, right, down, left
 
-    for episode in range(max_episodes):
-        pos = start_pos
-        states_data = np.where(states_data == 'r', 't', states_data)
-        episode_actions = []
-        episode_reword = 0
+    with open(out_episodes_file, 'w') as out_episodes:
 
-        #  updating epsilon by it's rate:
-        epsilon = epsilon_rate[0]
-        learning = learning_rate[0]
-        if max_episodes != 1:
-            epsilon = (epsilon_rate[0] - epsilon_rate[1]) * (1 - episode / (max_episodes - 1)) + epsilon_rate[1]
-            learning = (learning_rate[0] - learning_rate[1]) * (1 - episode / (max_episodes - 1)) + learning_rate[1]
+        for episode in range(max_episodes):
+            pos = start_pos
+            states_data = np.where(states_data == 'r', 't', states_data)
+            episode_actions = []
+            episode_reword = 0
 
-        rand_num = random.uniform(0, 1)
-        should_explore = True
-        if rand_num > epsilon:
-            should_explore = False  # we will exploit instead
+            #  updating epsilon by it's rate:
+            epsilon = epsilon_rate[0]
+            learning = learning_rate[0]
+            if max_episodes != 1:
+                epsilon = (epsilon_rate[0] - epsilon_rate[1]) * (1 - episode / (max_episodes - 1)) + epsilon_rate[1]
+                learning = (learning_rate[0] - learning_rate[1]) * (1 - episode / (max_episodes - 1)) + learning_rate[1]
 
-        is_game_over = False
-        num_steps = 0
-        num_targs_reach = 0
-        while (not is_game_over) and (num_steps < max_steps):
-            action = None
-            if should_explore:
-                action = random.randint(0, 3)
-            else:
-                action = np.argmax(qtable[pos[0], pos[1], num_targs_reach])
+            rand_num = random.uniform(0, 1)
+            should_explore = True
+            if rand_num > epsilon:
+                should_explore = False  # we will exploit instead
 
-            episode_actions.append(action)
+            is_game_over = False
+            num_steps = 0
+            num_targs_reach = 0
+            while (not is_game_over) and (num_steps < max_steps):
+                action = None
+                if should_explore:
+                    action = random.randint(0, 3)
+                else:
+                    action = np.argmax(qtable[pos[0], pos[1], num_targs_reach])
 
-            new_pos = tuple(map(operator.add, pos, action_offset[action]))
+                episode_actions.append(action)
 
-            res_state = 'o'  # we assume we aren't in range of the board
-            is_game_over = True
-            max_expec_reward = 0
-            new_num_targs_reach = num_targs_reach
-            if (new_pos[0] in range(states_data.shape[0])) and (new_pos[1] in range(states_data.shape[1])):
-                res_state = states_data[new_pos[0], new_pos[1]]
-                if res_state == 't':
-                    new_num_targs_reach += 1
-                    states_data[new_pos[0], new_pos[1]] = 'r'
+                new_pos = tuple(map(operator.add, pos, action_offset[action]))
 
-                if (res_state not in ['o', 'b']) and (new_num_targs_reach != num_targs):
-                    is_game_over = False
-                    max_expec_reward = np.amax(qtable[new_pos[0], new_pos[1], new_num_targs_reach])
+                res_state = 'o'  # we assume we aren't in range of the board
+                is_game_over = True
+                max_expec_reward = 0
+                new_num_targs_reach = num_targs_reach
+                if (new_pos[0] in range(states_data.shape[0])) and (new_pos[1] in range(states_data.shape[1])):
+                    res_state = states_data[new_pos[0], new_pos[1]]
+                    if res_state == 't':
+                        new_num_targs_reach += 1
+                        states_data[new_pos[0], new_pos[1]] = 'r'
 
-            res_state_reward = rewards[res_state]
-            episode_reword += res_state_reward
+                    if (res_state not in ['o', 'b']) and (new_num_targs_reach != num_targs):
+                        is_game_over = False
+                        max_expec_reward = np.amax(qtable[new_pos[0], new_pos[1], new_num_targs_reach])
 
-            qtable[pos[0], pos[1], num_targs_reach, action] = (1 - learning) * qtable[pos[0], pos[1],
-                        num_targs_reach, action] + learning * (res_state_reward + disc_rate * max_expec_reward)
+                res_state_reward = rewards[res_state]
+                episode_reword += res_state_reward
 
-            num_targs_reach = new_num_targs_reach
-            num_steps += 1
-            pos = new_pos
+                qtable[pos[0], pos[1], num_targs_reach, action] = (1 - learning) * qtable[pos[0], pos[1],
+                            num_targs_reach, action] + learning * (res_state_reward + disc_rate * max_expec_reward)
 
-        print(episode_actions, episode_reword)
+                num_targs_reach = new_num_targs_reach
+                num_steps += 1
+                pos = new_pos
+
+            out_episodes.write(f"{'*' * 7} episode {episode + 1} {'*' * 7}\n"
+                        f"episode actions: {episode_actions}\n"
+                        f"episode reward: {episode_reword}\n\n")
+
+    np.save(out_qtable_file, qtable)
 
 
 def main():
+    os.chdir(sys.argv[1])
+
     get_initials("ql_data.txt")
 
-    ql_learn_value_iter("ql_out_episodes.txt", "ql_out_qtable.txt")
+    ql_learn_value_iter("ql_out_episodes.txt", "ql_out_qtable")
 
 
 if __name__ == '__main__':
