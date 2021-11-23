@@ -11,6 +11,13 @@ public class MazeNode : MonoBehaviour
         TARGET_REACHED
     }
 
+    public enum MarkType
+    {
+        UNMARKED,
+        SCAN_MARK,
+        TARGET_PATH_MARK
+    }
+
     public static readonly float HEIGHT = 0.5f;
     public static readonly float WIDTH = 0.5f;
 
@@ -23,30 +30,36 @@ public class MazeNode : MonoBehaviour
     private static bool isChangeable = false;
     private static bool isInDrag = false;
 
-    private static bool shouldMarkeWithColor = false;
-    private static bool shouldMarkeWithSpecialColor = false;
-    private bool markedState = false;
-    public bool MarkedState
+    private bool isVisited = false;
+    public bool IsVisited
+    {
+        get => isVisited;
+        set => isVisited = value;
+    }
+
+    private MarkType markedState = MarkType.UNMARKED;
+    public MarkType MarkedState
     {
         get => markedState;
         set {
-            if ((value == markedState && !shouldMarkeWithSpecialColor) || isChangeable) return;
+            if ((value == markedState) || isChangeable) return;
 
-            if (shouldMarkeWithColor)
+       
+            switch (value)
             {
-                Color color = UNBLOCKED_COLOR;
-                if (value)
-                {
-                    if (shouldMarkeWithSpecialColor) {
-                        color = SPECIAL_MARKED_COLOR;
-                    }
-                    else
-                    {
-                        color = MARKED_COLOR;
-                    }
-                }
-                blockSR.color = color;
+                case MarkType.SCAN_MARK:
+                    blockSR.color = MARKED_COLOR;
+                    break;
+                case MarkType.TARGET_PATH_MARK:
+                    blockSR.color = SPECIAL_MARKED_COLOR;
+                    break;
+                case MarkType.UNMARKED:
+                    blockSR.color = UNBLOCKED_COLOR;
+                    break;
+                default:
+                    throw new System.Exception("unon marked type");
             }
+            
 
             markedState = value;
         }
@@ -141,13 +154,4 @@ public class MazeNode : MonoBehaviour
         isChangeable = state;
     }
 
-    public static void SetShouldMarkeWithColor(bool state)
-    {
-        shouldMarkeWithColor = state;
-    }
-
-    public static void SetShouldMarkeWithSpecialColor(bool state)
-    {
-        shouldMarkeWithSpecialColor = state;
-    }
 }

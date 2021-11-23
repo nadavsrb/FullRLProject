@@ -197,7 +197,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mazeBoard: {fileID: 1074771418}
   aiScriptPath: Assets/Scripts/ql_val_iter.py
-  numEpisEachFrame: 100
+  numEpisEachFrame: 0
   discountRate: 0.99
   epsilonRate:
     start: 1
@@ -453,7 +453,7 @@ MonoBehaviour:
   learningRate:
     start: 1
     end: 0.7
-  maxEpisodes: 5000
+  maxEpisodes: 0
   maxSteps: 500
   rewards:
   - nodeType: e

@@ -8,6 +8,8 @@ public class MazeBoard : MonoBehaviour
     [SerializeField] private int WIDTH = 30;
 
     private MazeNode[,] mazeNodes;
+    
+    private int numTargets;
 
     [SerializeField] GameObject prefabMazeNode;
 
@@ -32,23 +34,40 @@ public class MazeBoard : MonoBehaviour
             }
         }
 
+        numTargets = 0;
+
         SetIsChangeable(true);
 
-        aiPlayer.SetPosition(0, 0);
-        Invoke("doing", 30);
+        Invoke("doing", 5);
     }
 
     private void doing()
     {
         SetIsChangeable(false);
         aiPlayer.Play("Assets/Scripts/dir2");
-        Algorithm alg = (new GameObject("Algorithm")).AddComponent<BFS>();
-        Debug.Log(alg.IsSolvable(0, 0, mazeNodes));
+        Algorithm alg = (new GameObject("Algorithm")).AddComponent<DFS>();
+        Debug.Log(alg.IsSolvable(0, 0, mazeNodes, getNumTargets()));
+    }
+
+    public int getNumTargets()
+    {
+        return numTargets;
     }
 
     public void SetIsChangeable(bool b)
     {
         MazeNode.SetIsChangeable(b);
+
+        if (!b)
+        {
+            numTargets = 0;
+            foreach (var mazeNode in mazeNodes) {
+                if(mazeNode.State == MazeNode.States.TARGERT)
+                {
+                    ++numTargets;
+                }
+            }
+        }
     }
 
     public void intialzeTargets()
@@ -69,7 +88,7 @@ public class MazeBoard : MonoBehaviour
             return null;
         }
 
-        return new Vector3((-((float)WIDTH) / 2 + col + 0.5f) * MazeNode.WIDTH, ((float)HEIGHT / 2 - row - 0.5f) * MazeNode.HEIGHT);
+        return new Vector3((((float)-WIDTH) / 2 + col + 0.5f) * MazeNode.WIDTH, ((float)HEIGHT / 2 - row - 0.5f) * MazeNode.HEIGHT);
     }
 
     public MazeNode getMazeNode(int row, int col)

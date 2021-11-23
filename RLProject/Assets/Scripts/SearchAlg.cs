@@ -9,36 +9,36 @@ public abstract class Algorithm: MonoBehaviour
     {
         MARKE,
         UNMARKE,
-        UNMARKE_ALL
+        TARGET_PATH_MARKE
     }
     
     public static readonly float DELAY_SEC = 0.01f;
     public static readonly float SEC_BEFORE_END_ANIM = 1F;
     protected IList<Vector3Int> animSearchList;
-    protected MazeNode targetNode = null;
+    private int numAnimationRuning = 0;
 
-    public bool IsSolvable(int rowPlayer, int colPlayer, MazeNode[,] mazeNode)
+    public bool IsSolvable(int rowPlayer, int colPlayer, MazeNode[,] mazeNode, int numTargets)
     {
         animSearchList = new List<Vector3Int>();
-        targetNode = null;
 
         UnFatherAll(mazeNode);
 
-        bool isSolvable = Solve(rowPlayer,colPlayer, mazeNode);
+        bool isSolvable = Solve(rowPlayer,colPlayer, mazeNode, numTargets);
 
-        UnMarkeAll(mazeNode);
+        UnVisitAll(mazeNode);
+        numAnimationRuning = 0;
         StartCoroutine(DisplayAlg(mazeNode));
 
         return isSolvable;
     }
 
-    protected abstract bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode);
+    protected abstract bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode, int numTargets);
 
     private void UnMarkeAll(MazeNode[,] mazeNode)
     {
         foreach (Vector3Int vec in animSearchList)
         {
-            mazeNode[vec.x, vec.y].MarkedState = false;
+            mazeNode[vec.x, vec.y].MarkedState = MazeNode.MarkType.UNMARKED;
         }
     }
 
@@ -50,57 +50,60 @@ public abstract class Algorithm: MonoBehaviour
         }
     }
 
+    private void UnVisitAll(MazeNode[,] mazeNode)
+    {
+        foreach (Vector3Int vec in animSearchList)
+        {
+            mazeNode[vec.x, vec.y].IsVisited = false;
+        }
+    }
+
     private IEnumerator DisplayAlg(MazeNode[,] mazeNode)
     {
         var wait = new WaitForSeconds(DELAY_SEC);
 
-        MazeNode.SetShouldMarkeWithColor(true);
-
         foreach (Vector3Int vec in animSearchList)
         {
-            doAnimAction(vec, mazeNode);
-
+            ++numAnimationRuning;
+            StartCoroutine(doAnimAction(vec, mazeNode));
             yield return wait;
         }
 
-        MazeNode.SetShouldMarkeWithSpecialColor(true);
-
-        MazeNode node = targetNode;
-        while (node != null)
-        {
-            node.MarkedState = true;
-            node = node.FatherNode;
-
-            yield return wait;
-        }
-
-        MazeNode.SetShouldMarkeWithSpecialColor(false);
-
-        yield return new WaitForSeconds(SEC_BEFORE_END_ANIM);
+        yield return new WaitUntil(()=> numAnimationRuning == 0);
+        yield return wait;
 
         UnMarkeAll(mazeNode);
         UnFatherAll(mazeNode);
-
-        MazeNode.SetShouldMarkeWithColor(false);
     }
     
-    private void doAnimAction(Vector3Int vec, MazeNode[,] mazeNode)
+    private IEnumerator doAnimAction(Vector3Int vec, MazeNode[,] mazeNode)
     {
+        var wait = new WaitForSeconds(DELAY_SEC);
+
         switch ((AnimAction)vec.z)
         {
+            case AnimAction.TARGET_PATH_MARKE:
+                MazeNode node = mazeNode[vec.x, vec.y];
+                while (node != null)
+                {
+                    node.MarkedState = MazeNode.MarkType.TARGET_PATH_MARK;
+                    node = node.FatherNode;
+
+                    yield return wait;
+                }
+                break;
             case AnimAction.MARKE:
-                mazeNode[vec.x, vec.y].MarkedState = true;
+                mazeNode[vec.x, vec.y].MarkedState = MazeNode.MarkType.SCAN_MARK;
                 break;
             case AnimAction.UNMARKE:
-                mazeNode[vec.x, vec.y].MarkedState = false;
-                break;
-            case AnimAction.UNMARKE_ALL:
-                UnMarkeAll(mazeNode);
+                mazeNode[vec.x, vec.y].MarkedState = MazeNode.MarkType.UNMARKED;
                 break;
             default:
                 Debug.Log("Error: An Unknown animation action");
                 break;
         }
+
+        --numAnimationRuning;
     }
 
     protected bool IsValid(int rowPlayer, int colPlayer, MazeNode[,] mazeNode)
@@ -114,9 +117,14 @@ public abstract class Algorithm: MonoBehaviour
 
 
 public class DFS : Algorithm
-{
-    protected override bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode)
+{ 
+    private int numTargetsReached = 0;
+    private int numTargets;
+
+    protected override bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode, int numTargets)
     {
+        numTargetsReached = 0;
+        this.numTargets = numTargets;
         return SolveHelper(rowPlayer, colPlayer, mazeNode, null);
     }
 
@@ -124,16 +132,19 @@ public class DFS : Algorithm
     {
         if (!IsValid(rowPlayer, colPlayer, mazeNode) ||
             mazeNode[rowPlayer, colPlayer].State == MazeNode.States.BLOCKED ||
-            mazeNode[rowPlayer, colPlayer].MarkedState == true) return false;
+            mazeNode[rowPlayer, colPlayer].IsVisited == true) return false;
 
         mazeNode[rowPlayer, colPlayer].FatherNode = fatherNode;
-        mazeNode[rowPlayer, colPlayer].MarkedState = true;
+        mazeNode[rowPlayer, colPlayer].IsVisited = true;
         animSearchList.Add(new Vector3Int(rowPlayer, colPlayer, (int)AnimAction.MARKE));
 
         if (mazeNode[rowPlayer, colPlayer].State == MazeNode.States.TARGERT)
         {
-            targetNode = mazeNode[rowPlayer, colPlayer];
-            return true;
+            animSearchList.Add(new Vector3Int(rowPlayer, colPlayer, (int)AnimAction.TARGET_PATH_MARKE));
+            ++numTargetsReached;
+            
+            if(numTargetsReached == numTargets) return true;
+            
         }
 
         bool isSolvable = SolveHelper(rowPlayer, colPlayer + 1, mazeNode, mazeNode[rowPlayer, colPlayer]) ||
@@ -141,15 +152,13 @@ public class DFS : Algorithm
              SolveHelper(rowPlayer + 1, colPlayer, mazeNode, mazeNode[rowPlayer, colPlayer]) ||
              SolveHelper(rowPlayer, colPlayer - 1, mazeNode, mazeNode[rowPlayer, colPlayer]);
 
-        // animSearchList.Add(new Vector3Int(rowPlayer, colPlayer, (int)AnimAction.UNMARKE));
-
         return isSolvable;
     }
 }
 
 public class BFS : Algorithm
 {
-    protected override bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode)
+    protected override bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode, int numTargets)
     {
         if (!IsValid(rowPlayer, colPlayer, mazeNode) ||
            mazeNode[rowPlayer, colPlayer].State == MazeNode.States.BLOCKED) return false;
@@ -157,9 +166,10 @@ public class BFS : Algorithm
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
         queue.Enqueue(new Vector2Int(rowPlayer, colPlayer));
 
-        mazeNode[rowPlayer, colPlayer].MarkedState = true;
+        mazeNode[rowPlayer, colPlayer].IsVisited = true;
         animSearchList.Add(new Vector3Int(rowPlayer, colPlayer, (int)AnimAction.MARKE));
 
+        int numTargetsReached = 0;
         bool isSolvable = false;
         while(queue.Count != 0)
         {
@@ -176,24 +186,26 @@ public class BFS : Algorithm
             {
                 if (!IsValid(newPos.x, newPos.y, mazeNode) ||
                     mazeNode[newPos.x, newPos.y].State == MazeNode.States.BLOCKED ||
-                     mazeNode[newPos.x, newPos.y].MarkedState == true) continue;
+                     mazeNode[newPos.x, newPos.y].IsVisited == true) continue;
 
                 mazeNode[newPos.x, newPos.y].FatherNode = mazeNode[currPos.x, currPos.y];
-                mazeNode[newPos.x, newPos.y].MarkedState = true;
+                mazeNode[newPos.x, newPos.y].IsVisited = true;
                 animSearchList.Add(new Vector3Int(newPos.x, newPos.y, (int)AnimAction.MARKE));
 
-                if(mazeNode[newPos.x, newPos.y].State == MazeNode.States.TARGERT)
+                if (mazeNode[newPos.x, newPos.y].State == MazeNode.States.TARGERT)
                 {
-                    targetNode = mazeNode[newPos.x, newPos.y];
+                    animSearchList.Add(new Vector3Int(newPos.x, newPos.y, (int)AnimAction.TARGET_PATH_MARKE));
+                    ++numTargetsReached;
+                    if (numTargetsReached == numTargets) {
+                        while (queue.Count != 0)
+                        {
+                            var oldPos = queue.Dequeue();
+                        }
 
-                    while (queue.Count != 0)
-                    {
-                        var oldPos = queue.Dequeue();
+                        isSolvable = true;
+
+                        break;
                     }
-
-                    isSolvable = true;
-
-                    break;
                 }
 
                 queue.Enqueue(newPos);

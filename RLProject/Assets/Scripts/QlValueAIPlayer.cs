@@ -9,6 +9,7 @@ class QlValueAIPlayer: Player
 {
     [SerializeField] string aiScriptPath;
     private string startDir;
+    private Process execPros;
 
     [SerializeField] int numEpisEachFrame;
 
@@ -38,24 +39,24 @@ class QlValueAIPlayer: Player
         this.startDir = startDir;
         WriteDataFile($"{startDir}/ql_data.txt");
 
-        Process p = new Process();
-        p.StartInfo = new ProcessStartInfo(@"python3", $"{aiScriptPath} {startDir}")
+        execPros = new Process();
+        execPros.StartInfo = new ProcessStartInfo(@"python3", $"{aiScriptPath} {startDir}")
         {
             RedirectStandardOutput = true,
             UseShellExecute = false,
-            CreateNoWindow = true
+            CreateNoWindow = true,
         };
-        p.Start();
-
-        string output = p.StandardOutput.ReadToEnd();
-        p.WaitForExit();
+        
+        execPros.Start();
 
         StartCoroutine(DisplayMoves($"{startDir}/ql_out_episodes.txt"));
     }
 
     private IEnumerator DisplayMoves(string episodeFileName)
     {
-        var wait = new WaitForSeconds(0.07f);
+        execPros.WaitForExit();
+
+        var wait = new WaitForSeconds(0.01f);
         int episodeIndex = 0;
         foreach (string line in File.ReadLines(episodeFileName))
         {
@@ -90,7 +91,7 @@ class QlValueAIPlayer: Player
                             throw new Exception("unknown action");
                     }
 
-                    yield return wait;
+                    yield return new WaitUntil(() => isMoveEnded == true);
                 }
 
                 
