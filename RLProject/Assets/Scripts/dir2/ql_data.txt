@@ -8,33 +8,33 @@ learning rate:
 1 0.7
 
 max episodes:
-0
+10000
 
 max steps:
 500
 
 rewards by state-type:
-{'e': -1,'t': 30,'b': -100,'o': -100,'r': -1}
+{'e': -1,'t': 40,'b': -100,'o': -100,'r': -1}
 
 states data:
 e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e
 e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e
+e e e e e e e e e e e e e b b b b b e e e e e e e e e e e e e e e e e
+e e e e e e e e e e e e b b e t e e e e e e e e e e e e e e e e e e e
+e e e e e e e e e e e e b b e e e e e e e e e e e e e e e e e e e e e
+e e e e e e e e e e e e e b b b b b b b b e e e e e e e e e e e e e e
+e e e e e e e t e e e e e e e e e e e e e b b b b e e e e e e e e e e
+e e e e e e e e e e e e e e e e e e e e e e e e b b b b b b e e e e e
+e e e e e e e e e e e e e e e e e e e e e t e e e e e e e b e e e e e
+e e e e e b b b b e e e e e e e e e e e e e e e e e e e e b b e e e e
+e e e e e b e e e b e e e t e e e e e e e e e e e e t e e e b e e e e
+e e e e e b e e t e b e e e e e b b b b b e e e b e e e e e b e e e e
+e e e e e b e e e e b b e e e b b e e e b b e b e b e e e e b e e e e
+e e e e e b e e e e e b e e b e e e e t e b b b e b b b b b b e e e e
+e e e e e e b e e e e e b b b e e e e e e e e e e e e e e e e e e e e
+e e e e e e b b e e e e e e e e e e e e e e e e e e e e e e e e e e e
 e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e
-e e e e e e e e e e b b b b b e b b b b b b b e b b e e e e e e e e e
-e e e e e e e e b b b e e e e e e e e e e e e e e e b b e e e e e e e
-e e e e e e e b b e e e e e e e e e e e e e e e e e e e b e e e e e e
-e e e e e e b b e e e e e b e e e e e e e e e e e e e e b b e e e e e
-e e e e e e b e e e e e e b e e e e e e b e e e e e e e e b e e e e e
-e e e e e e b e e e e e e b e e e e e e t e e e e e e e e b e e e e e
-e e e e e b e e e e e e e b e e e e e e e e e e e e e e e b e e e e e
-e e e e e b b e e e e e e b e e e e e e e e e e e e e e e b e e e e e
-e e e e e e e e e e e e e b e e e e e e e e e e e e e e b b e e e e e
-e e e e e e b b e e e e e e b e e e e e e e e e e e e b b e e e e t e
-e e e e e e e b e e e e e e b e e e e e e e e e e e b b e e e e e e e
-e e e e e e e b e e e e e e e b b e e e e e e b b b e e e e e e e e e
-e e e e e e e b b e e e e e e e b b b b b e b b e e e e e e e e e e e
-e e e e e e e e b e e e e e e e e e e e e e e e e e e e e e t e e e e
-e e e e e e e e e b e e e e e e e e e e e e e e e e e e e e e e e e e
+e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e e
 
 starting position:
 0 0

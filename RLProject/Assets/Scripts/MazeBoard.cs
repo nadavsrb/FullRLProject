@@ -38,7 +38,7 @@ public class MazeBoard : MonoBehaviour
 
         SetIsChangeable(true);
 
-        Invoke("doing", 5);
+        Invoke("doing", 30);
     }
 
     private void doing()

@@ -31,7 +31,7 @@ class QlValueAIPlayer: Player
     struct RewardType
     {
         [SerializeField] public string nodeType;
-        [SerializeField] public int reward;
+        [SerializeField] public float reward;
     }
 
     public void Play(string startDir)

@@ -445,7 +445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mazeBoard: {fileID: 1074771418}
   aiScriptPath: Assets/Scripts/ql_val_iter.py
-  numEpisEachFrame: 0
+  numEpisEachFrame: 1000
   discountRate: 0.99
   epsilonRate:
     start: 1
@@ -453,13 +453,13 @@ MonoBehaviour:
   learningRate:
     start: 1
     end: 0.7
-  maxEpisodes: 0
+  maxEpisodes: 10000
   maxSteps: 500
   rewards:
   - nodeType: e
     reward: -1
   - nodeType: t
-    reward: 30
+    reward: 40
   - nodeType: b
     reward: -100
   - nodeType: o

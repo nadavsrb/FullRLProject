@@ -106,19 +106,15 @@ def ql_learn_value_iter(out_episodes_file, out_qtable_file):
             epsilon = epsilon_by_episode(episode)
             learning = learning_by_episode(episode)
 
-            rand_num = random.uniform(0, 1)
-            should_explore = True
-            if rand_num > epsilon:
-                should_explore = False  # we will exploit instead
-
             is_game_over = False
             num_steps = 0
             targs_reach = 0
             while (not is_game_over) and (num_steps < max_steps):
-                if should_explore:
-                    action = random.randint(0, 3)
-                else:
+                rand_num = random.uniform(0, 1)
+                if rand_num > epsilon:
                     action = np.argmax(qtable[pos[0], pos[1], targs_reach])
+                else:
+                    action = random.randint(0, 3)
 
                 episode_actions.append(action)
 
