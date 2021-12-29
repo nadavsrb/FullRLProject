@@ -23,6 +23,7 @@ public class AlgorithmObject : MonoBehaviour
     {
         gameObject.AddComponent<DFS>().EndAnimLisners += OnStopAnim;
         gameObject.AddComponent<BFS>().EndAnimLisners += OnStopAnim;
+        gameObject.AddComponent<AStar>().EndAnimLisners += OnStopAnim;
 
         alg = GetComponent<BFS>();
     }
@@ -49,7 +50,11 @@ public class AlgorithmObject : MonoBehaviour
             algName = "DFS";
             alg = GetComponent<DFS>();
         }
-        else
+        else if(algName == "DFS")
+        {
+            algName = "A*";
+            alg = GetComponent<AStar>();
+        } else
         {
             algName = "BFS";
             alg = GetComponent<BFS>();

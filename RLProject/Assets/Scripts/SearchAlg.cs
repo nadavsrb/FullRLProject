@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -60,25 +61,25 @@ public abstract class Algorithm: MonoBehaviour
 
     private void UnMarkeAll(MazeNode[,] mazeNode)
     {
-        foreach (Vector3Int vec in animSearchList)
+        foreach (var node in mazeNode)
         {
-            mazeNode[vec.x, vec.y].MarkedState = MazeNode.MarkType.UNMARKED;
+            node.MarkedState = MazeNode.MarkType.UNMARKED;
         }
     }
 
     private void UnFatherAll(MazeNode[,] mazeNode)
     {
-        foreach (Vector3Int vec in animSearchList)
+        foreach (var node in mazeNode)
         {
-            mazeNode[vec.x, vec.y].FatherNode = null;
+            node.FatherNode = null;
         }
     }
 
     private void UnVisitAll(MazeNode[,] mazeNode)
     {
-        foreach (Vector3Int vec in animSearchList)
+        foreach (var node in mazeNode)
         {
-            mazeNode[vec.x, vec.y].IsVisited = false;
+            node.IsVisited = false;
         }
     }
 
@@ -235,6 +236,141 @@ public class BFS : Algorithm
                         break;
                     }
                 }
+
+                queue.Enqueue(newPos);
+            }
+        }
+
+        return isSolvable;
+    }
+}
+
+public class AStar : Algorithm
+{
+    private List<Vector2Int> targetPos;
+
+    public class MyPriorityQueue
+    {
+        private List<Vector2Int> queue;
+        private List<Vector2Int> targetPos;
+
+        public int Count
+        {
+            get => queue.Count;
+        }
+
+        public MyPriorityQueue(List<Vector2Int> targetPos)
+        {
+            queue = new List<Vector2Int>();
+
+            this.targetPos = targetPos;
+        }
+
+        public void Enqueue(Vector2Int vector2Int)
+        {
+            queue.Add(new Vector2Int(vector2Int.x, vector2Int.y));
+        }
+
+        public Vector2Int? Dequeue()
+        {
+            Vector2Int? elementToDequeue = null;
+            double minDist = Double.PositiveInfinity;
+
+            foreach(Vector2Int vec in queue)
+            {
+                double distCloseTarget = Double.PositiveInfinity;
+
+                foreach(Vector2Int target in targetPos)
+                {
+                    double dist = Math.Sqrt(Math.Pow((vec.x - target.x), 2) + Math.Pow((vec.y - target.y), 2));
+
+                    if (distCloseTarget > dist)
+                    {
+                        distCloseTarget = dist;
+                    }
+                }
+
+                if(minDist == Double.PositiveInfinity || minDist > distCloseTarget)
+                {
+                    minDist = distCloseTarget;
+                    elementToDequeue = new Vector2Int(vec.x, vec.y);
+                }
+            }
+
+            if(elementToDequeue != null)
+            {
+                queue.RemoveAll(pos => (pos.x == elementToDequeue.Value.x) && (pos.y == elementToDequeue.Value.y));
+            }
+
+            return elementToDequeue;
+        }
+    }
+
+
+    protected override bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode, int numTargets)
+    {
+        if (!IsValid(rowPlayer, colPlayer, mazeNode) ||
+           mazeNode[rowPlayer, colPlayer].State == MazeNode.States.BLOCKED) return false;
+
+        targetPos = new List<Vector2Int>();
+
+        for(int i = 0; i < mazeNode.GetLength(0); ++i)
+        {
+            for (int j = 0; j < mazeNode.GetLength(1); ++j)
+            {
+                if (mazeNode[i, j].State == MazeNode.States.TARGERT)
+                {
+                    targetPos.Add(new Vector2Int(i, j));
+                }
+            }
+        }
+
+        MyPriorityQueue queue = new MyPriorityQueue(targetPos);
+        queue.Enqueue(new Vector2Int(rowPlayer, colPlayer));
+
+        mazeNode[rowPlayer, colPlayer].IsVisited = true;
+
+        int numTargetsReached = 0;
+        bool isSolvable = false;
+        while (queue.Count != 0)
+        {
+            var currPos = queue.Dequeue().Value;
+
+            animSearchList.Add(new Vector3Int(currPos.x, currPos.y, (int)AnimAction.MARKE));
+
+            if (mazeNode[currPos.x, currPos.y].State == MazeNode.States.TARGERT)
+            {
+                targetPos.RemoveAll(pos => (pos.x == currPos.x) && (pos.y == currPos.y));
+
+                animSearchList.Add(new Vector3Int(currPos.x, currPos.y, (int)AnimAction.TARGET_PATH_MARKE));
+                ++numTargetsReached;
+                if (numTargetsReached == numTargets)
+                {
+                    while (queue.Count != 0)
+                    {
+                        var oldPos = queue.Dequeue().Value;
+                    }
+
+                    isSolvable = true;
+                    break;
+                }
+            }
+
+            Vector2Int[] newPoss = {
+                new Vector2Int(currPos.x , currPos.y + 1),
+                new Vector2Int(currPos.x - 1, currPos.y),
+                new Vector2Int(currPos.x , currPos.y - 1),
+                new Vector2Int(currPos.x + 1, currPos.y)
+            };
+
+            foreach (var newPos in newPoss)
+            {
+                if (!IsValid(newPos.x, newPos.y, mazeNode) ||
+                    mazeNode[newPos.x, newPos.y].State == MazeNode.States.BLOCKED ||
+                     mazeNode[newPos.x, newPos.y].IsVisited == true) continue;
+
+                mazeNode[newPos.x, newPos.y].FatherNode = mazeNode[currPos.x, currPos.y];
+                mazeNode[newPos.x, newPos.y].IsVisited = true;
 
                 queue.Enqueue(newPos);
             }
