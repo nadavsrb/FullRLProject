@@ -12,13 +12,28 @@ public abstract class Algorithm: MonoBehaviour
         TARGET_PATH_MARKE
     }
     
-    public static readonly float DELAY_SEC = 0.01f;
+    public static readonly float DELAY_SEC = 0.05f;
+    public static float speed = 1f;
     public static readonly float SEC_BEFORE_END_ANIM = 1F;
     protected IList<Vector3Int> animSearchList;
     private int numAnimationRuning = 0;
+    private MazeBoard maze;
 
-    public bool IsSolvable(int rowPlayer, int colPlayer, MazeNode[,] mazeNode, int numTargets)
+    public delegate void EndAnimLisner();
+    public event EndAnimLisner EndAnimLisners;
+
+    public bool IsSolvable(Player player)
     {
+        var pos = player.PosInMaze;
+        var mazeBoard = maze = player.MazeBoard;
+        int rowPlayer = pos.x;
+        int colPlayer = pos.y;
+
+        mazeBoard.SetIsChangeable(false);
+
+        MazeNode[,] mazeNode = mazeBoard.GetMazeNodes();
+        int numTargets = mazeBoard.GetNumTargets();
+
         animSearchList = new List<Vector3Int>();
 
         UnFatherAll(mazeNode);
@@ -27,12 +42,21 @@ public abstract class Algorithm: MonoBehaviour
 
         UnVisitAll(mazeNode);
         numAnimationRuning = 0;
-        StartCoroutine(DisplayAlg(mazeNode));
+        StartCoroutine(DisplayAlg(mazeNode, mazeBoard));
 
         return isSolvable;
     }
 
     protected abstract bool Solve(int rowPlayer, int colPlayer, MazeNode[,] mazeNode, int numTargets);
+
+    public void StopAnim()
+    {
+        StopAllCoroutines();
+        UnMarkeAll(maze.GetMazeNodes());
+        UnFatherAll(maze.GetMazeNodes());
+
+        maze.SetIsChangeable(true);
+    }
 
     private void UnMarkeAll(MazeNode[,] mazeNode)
     {
@@ -58,9 +82,9 @@ public abstract class Algorithm: MonoBehaviour
         }
     }
 
-    private IEnumerator DisplayAlg(MazeNode[,] mazeNode)
+    private IEnumerator DisplayAlg(MazeNode[,] mazeNode, MazeBoard mazeBoard)
     {
-        var wait = new WaitForSeconds(DELAY_SEC);
+        var wait = new WaitForSeconds(DELAY_SEC / speed);
 
         foreach (Vector3Int vec in animSearchList)
         {
@@ -74,11 +98,15 @@ public abstract class Algorithm: MonoBehaviour
 
         UnMarkeAll(mazeNode);
         UnFatherAll(mazeNode);
+
+        mazeBoard.SetIsChangeable(true);
+
+        EndAnimLisners();
     }
     
     private IEnumerator doAnimAction(Vector3Int vec, MazeNode[,] mazeNode)
     {
-        var wait = new WaitForSeconds(DELAY_SEC);
+        var wait = new WaitForSeconds(DELAY_SEC / speed);
 
         switch ((AnimAction)vec.z)
         {

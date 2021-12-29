@@ -4,31 +4,55 @@ using UnityEngine;
 public class MazeBoard : MonoBehaviour
 {
     [SerializeField] QlValueAIPlayer aiPlayer;
-    [SerializeField] private int HEIGHT = 18;
-    [SerializeField] private int WIDTH = 30;
+    [SerializeField] RectTransform env;
+    [SerializeField] private int numNodesWidth;
+    private int numNodesHeight;
 
     private MazeNode[,] mazeNodes;
-    
+
     private int numTargets;
 
     [SerializeField] GameObject prefabMazeNode;
 
+    private bool isIntialized = false;
+    public bool IsIntialized{
+        get => isIntialized;
+    }
+
+    public int NumNodesWidth
+    {
+        get => numNodesWidth;
+    }
+
+    public int NumNodesHeight
+    {
+        get => numNodesHeight;
+    }
+
+    private bool isChangeble = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        mazeNodes = new MazeNode[HEIGHT,WIDTH];
+        var dimNode = env.rect.width / numNodesWidth;
+        numNodesHeight = (int) (env.rect.height / dimNode);
+        MazeNode.SetSize(dimNode);
 
-        for (int row = 0; row < HEIGHT; ++row)
+        mazeNodes = new MazeNode[numNodesHeight, numNodesWidth];
+
+        Transform transform;
+
+        for (int row = 0; row < numNodesHeight; ++row)
         {
-            for(int col = 0; col < WIDTH; ++col)
+            for(int col = 0; col < numNodesWidth; ++col)
             {
                 var mazeNode = Instantiate(prefabMazeNode);
 
-                var transform = mazeNode.GetComponent<Transform>();
+                transform = mazeNode.GetComponent<Transform>();
 
                 transform.SetParent(GetComponent<Transform>());
 
-                transform.position = GetPosition(row, col).Value;
+                transform.localPosition = GetPosition(row, col).Value;
 
                 mazeNodes[row, col] = mazeNode.GetComponent<MazeNode>();
             }
@@ -38,24 +62,23 @@ public class MazeBoard : MonoBehaviour
 
         SetIsChangeable(true);
 
-        Invoke("doing", 30);
+        isIntialized = true;
     }
 
-    private void doing()
+    private void doing() //////////////////
     {
-        SetIsChangeable(false);
         aiPlayer.Play("Assets/Scripts/dir2");
-        Algorithm alg = (new GameObject("Algorithm")).AddComponent<DFS>();
-        Debug.Log(alg.IsSolvable(0, 0, mazeNodes, getNumTargets()));
     }
 
-    public int getNumTargets()
+    public int GetNumTargets()
     {
         return numTargets;
     }
 
     public void SetIsChangeable(bool b)
     {
+        isChangeble = b;
+
         MazeNode.SetIsChangeable(b);
 
         if (!b)
@@ -70,7 +93,12 @@ public class MazeBoard : MonoBehaviour
         }
     }
 
-    public void intialzeTargets()
+    public bool GetIsChangeable()
+    {
+        return isChangeble;
+    }
+
+    public void IntialzeTargets()
     {
         foreach(var mazeNode in mazeNodes)
         {
@@ -81,27 +109,40 @@ public class MazeBoard : MonoBehaviour
         }
     }
 
+    public void ResetNodes()
+    {
+        foreach (var mazeNode in mazeNodes)
+        {
+            mazeNode.State = MazeNode.States.UNBLOCKED;
+        }
+    }
+
     public Vector3? GetPosition(int row, int col)
     {
-        if(row >= HEIGHT || row < 0 || col < 0 || col >=WIDTH)
+        if(row >= numNodesHeight || row < 0 || col < 0 || col >= numNodesWidth)
         {
             return null;
         }
 
-        return new Vector3((((float)-WIDTH) / 2 + col + 0.5f) * MazeNode.WIDTH, ((float)HEIGHT / 2 - row - 0.5f) * MazeNode.HEIGHT);
+        return new Vector3((((float)-numNodesWidth) / 2 + col + 0.5f) * MazeNode.WIDTH,
+            ((float)numNodesHeight / 2 - row - 0.5f) * MazeNode.HEIGHT);
     }
 
-    public MazeNode getMazeNode(int row, int col)
+    public MazeNode GetMazeNode(int row, int col)
     {
         return mazeNodes[row, col];
+    }
+    public MazeNode[,] GetMazeNodes()
+    {
+        return mazeNodes;
     }
 
     public override string ToString() {
         string strMaze = "";
 
-        for (int row = 0; row < HEIGHT; ++row)
+        for (int row = 0; row < numNodesHeight; ++row)
         {
-            for (int col = 0; col < WIDTH; ++col)
+            for (int col = 0; col < numNodesWidth; ++col)
             {
                 if(col != 0)
                 {

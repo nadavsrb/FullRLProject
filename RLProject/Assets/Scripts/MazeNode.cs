@@ -18,8 +18,8 @@ public class MazeNode : MonoBehaviour
         TARGET_PATH_MARK
     }
 
-    public static readonly float HEIGHT = 0.5f;
-    public static readonly float WIDTH = 0.5f;
+    public static float HEIGHT = 0.5f;
+    public static float WIDTH = 0.5f;
 
     private SpriteRenderer blockSR;
     private SpriteRenderer aliceSR;
@@ -35,6 +35,13 @@ public class MazeNode : MonoBehaviour
     {
         get => isVisited;
         set => isVisited = value;
+    }
+
+    private bool isPlayerPlace = false;
+    public bool IsPlayerPlace
+    {
+        get => isPlayerPlace;
+        set => isPlayerPlace = value;
     }
 
     private MarkType markedState = MarkType.UNMARKED;
@@ -80,7 +87,7 @@ public class MazeNode : MonoBehaviour
         set
         {
             if (value == state || 
-                (!isChangeable && value != States.TARGERT && value != States.TARGET_REACHED)) return;
+                (!isChangeable && value != States.TARGERT && value != States.TARGET_REACHED) || isPlayerPlace) return;
 
             aliceSR.enabled = false;
 
@@ -154,4 +161,9 @@ public class MazeNode : MonoBehaviour
         isChangeable = state;
     }
 
+    public static void SetSize(float dim)
+    {
+        WIDTH = dim;
+        HEIGHT = dim;
+    }
 }

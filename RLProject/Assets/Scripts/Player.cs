@@ -6,42 +6,83 @@ public class Player : MonoBehaviour
 {
     private Transform transform;
     [SerializeField] protected MazeBoard mazeBoard;
+    public MazeBoard MazeBoard
+    {
+        get => mazeBoard;
+    }
 
     protected bool isMoveEnded = true;
     protected Vector2Int posInMaze; // X, Y in the maze grid
+    public Vector2Int PosInMaze
+    {
+        get => posInMaze;
+    }
+
+    private bool isStarted = false;
 
     // Start is called before the first frame update
-    void Start()
+    void Update()
     {
-        transform = GetComponent<Transform>();
+        if (mazeBoard.IsIntialized && !isStarted)
+        {
 
-        transform.localScale = new Vector3(MazeNode.WIDTH, MazeNode.HEIGHT);
+            transform = GetComponent<Transform>();
 
-        SetPosition(0, 0);
+            transform.localScale = new Vector3(MazeNode.WIDTH, MazeNode.HEIGHT);
+
+            posInMaze.x = -1;
+            posInMaze.y = -1;
+
+            SetPosition(mazeBoard.NumNodesHeight / 2, mazeBoard.NumNodesWidth / 2);
+
+            isStarted = true;
+        }
+    }
+    
+    public void SetMazeBoard(MazeBoard mazeBoard)
+    {
+        this.mazeBoard = mazeBoard;
     }
 
     public void SetPosition(int row, int col, bool isAnimated=false)
     {
         var newPos = mazeBoard.GetPosition(row, col);
         if (newPos == null) return;//invalid pos
-        if (mazeBoard.getMazeNode(row, col).State == MazeNode.States.BLOCKED) return;
-  
-        posInMaze.x = row;
-        posInMaze.y = col;
+        if (mazeBoard.GetMazeNode(row, col).State == MazeNode.States.BLOCKED) return;
 
         if (isAnimated)
         {
+            if (posInMaze.x != -1 && posInMaze.x != -1)
+            {
+                mazeBoard.GetMazeNode(posInMaze.x, posInMaze.y).IsPlayerPlace = false;
+            }
+
+            mazeBoard.GetMazeNode(row, col).IsPlayerPlace = true;
+
+            posInMaze.x = row;
+            posInMaze.y = col;
+
             isMoveEnded = false;
             StartCoroutine(Move(newPos.Value, 5));
         }
         else
         {
-            transform.position = newPos.Value;
+            transform.localPosition = newPos.Value;
 
-            if (mazeBoard.getMazeNode(row, col).State == MazeNode.States.TARGERT)
+            if (posInMaze.x != -1 && posInMaze.x != -1)
             {
-                mazeBoard.getMazeNode(row, col).State = MazeNode.States.TARGET_REACHED;
+                mazeBoard.GetMazeNode(posInMaze.x, posInMaze.y).IsPlayerPlace = false;
             }
+
+            mazeBoard.GetMazeNode(row, col).IsPlayerPlace = true;
+
+            if (mazeBoard.GetMazeNode(row, col).State == MazeNode.States.TARGERT)
+            {
+                mazeBoard.GetMazeNode(row, col).State = MazeNode.States.TARGET_REACHED;
+            }
+
+            posInMaze.x = row;
+            posInMaze.y = col;
         }
     }
 
@@ -50,19 +91,19 @@ public class Player : MonoBehaviour
     {
         var wait = new WaitForSeconds(0.03f);
 
-        var oldPos = transform.position;
+        var oldPos = transform.localPosition;
 
         for(int i=1; i < frames; ++i)
         {
-            transform.position = (oldPos - newPos) * (1 - (i / (float)frames)) + newPos;
+            transform.localPosition = (oldPos - newPos) * (1 - (i / (float)frames)) + newPos;
             yield return wait;
         }
 
-        transform.position = newPos;
+        transform.localPosition = newPos;
 
-        if (mazeBoard.getMazeNode(posInMaze.x, posInMaze.y).State == MazeNode.States.TARGERT)
+        if (mazeBoard.GetMazeNode(posInMaze.x, posInMaze.y).State == MazeNode.States.TARGERT)
         {
-            mazeBoard.getMazeNode(posInMaze.x, posInMaze.y).State = MazeNode.States.TARGET_REACHED;
+            mazeBoard.GetMazeNode(posInMaze.x, posInMaze.y).State = MazeNode.States.TARGET_REACHED;
         }
 
         isMoveEnded = true;

@@ -96,7 +96,7 @@ class QlValueAIPlayer: Player
 
                 
                 SetPosition(0, 0);
-                mazeBoard.intialzeTargets();
+                mazeBoard.IntialzeTargets();
                 yield return wait;
             }
         }
